@@ -1,0 +1,200 @@
+---
+// Header de Starlight + nav del portafolio (Inicio/Sobre mí/Proyectos/Cursos/Contacto).
+// Basado en el Header.astro default de Starlight: reutiliza SiteTitle, Search,
+// SocialIcons y ThemeSelect tal cual, solo agrega el <nav> del medio.
+import config from 'virtual:starlight/user-config';
+
+import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
+import Search from 'virtual:starlight/components/Search';
+import SiteTitle from 'virtual:starlight/components/SiteTitle';
+import SocialIcons from 'virtual:starlight/components/SocialIcons';
+import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+
+import { NAV_LINKS } from '../../config/profile.mjs';
+
+const shouldRenderSearch =
+	config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
+
+const base = import.meta.env.BASE_URL;
+const withBase = (p: string) => base + p.replace(/^\//, '');
+
+const currentId = Astro.locals.starlightRoute.id;
+const isActive = (href: string) => {
+	const navId = href.replace(/^\/|\/$/g, '');
+	if (navId === '') return currentId === '';
+	return currentId === navId || currentId.startsWith(`${navId}/`);
+};
+---
+
+<div class="header">
+	<div class="title-wrapper sl-flex"><SiteTitle /></div>
+
+	<input type="checkbox" id="nav-toggle" class="nav-toggle-input" />
+	<label for="nav-toggle" class="nav-toggle-label" aria-label="Abrir menú">
+		<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<path d="M3 6h18M3 12h18M3 18h18" />
+		</svg>
+	</label>
+
+	<nav class="portfolio-nav">
+		{NAV_LINKS.map((item) => (
+			<a href={withBase(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+				{item.label}
+			</a>
+		))}
+		<div class="mobile-only-controls sl-flex">
+			<div class="sl-flex social-icons"><SocialIcons /></div>
+			<ThemeSelect />
+		</div>
+	</nav>
+
+	<div class="sl-flex print:hidden">{shouldRenderSearch && <Search />}</div>
+	<div class="sl-hidden md:sl-flex print:hidden right-group">
+		<div class="sl-flex social-icons"><SocialIcons /></div>
+		<ThemeSelect />
+		<LanguageSelect />
+	</div>
+</div>
+
+<style>
+	@layer starlight.core {
+		.header {
+			position: relative;
+			display: flex;
+			flex-wrap: wrap;
+			gap: var(--sl-nav-gap);
+			justify-content: space-between;
+			align-items: center;
+			height: 100%;
+		}
+
+		.title-wrapper {
+			overflow: clip;
+			padding: 0.25rem;
+			margin: -0.25rem;
+			min-width: 0;
+		}
+
+		.right-group,
+		.social-icons {
+			gap: 1rem;
+			align-items: center;
+		}
+		.social-icons::after {
+			content: '';
+			height: 2rem;
+			border-inline-end: 1px solid var(--sl-color-gray-5);
+		}
+
+		@media (min-width: 50rem) {
+			:global(:root[data-has-sidebar]) {
+				--__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
+			}
+			:global(:root:not([data-has-toc])) {
+				--__toc-width: 0rem;
+			}
+			.header {
+				--__sidebar-width: max(0rem, var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x));
+				--__main-column-fr: calc(
+					(
+							100% + var(--__sidebar-pad, 0rem) - var(--__toc-width, var(--sl-sidebar-width)) -
+								(2 * var(--__toc-width, var(--sl-nav-pad-x))) - var(--sl-content-inline-start, 0rem) -
+								var(--sl-content-width)
+						) / 2
+				);
+				display: grid;
+				grid-template-columns:
+					minmax(
+						calc(var(--__sidebar-width) + max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))),
+						auto
+					)
+					auto
+					1fr
+					auto;
+				align-content: center;
+			}
+		}
+	}
+</style>
+
+<style>
+	/* Nav del portafolio */
+	.nav-toggle-input {
+		display: none;
+	}
+
+	.nav-toggle-label {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		color: var(--sl-color-gray-2);
+		order: 1;
+	}
+
+	.portfolio-nav {
+		display: none;
+		order: 10;
+	}
+
+	.nav-toggle-input:checked ~ .portfolio-nav {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		position: absolute;
+		inset-inline: 0;
+		top: 100%;
+		padding: 0.75rem var(--sl-nav-pad-x) 1rem;
+		background: var(--sl-color-bg-nav);
+		border-top: 1px solid var(--sl-color-hairline);
+		border-bottom: 1px solid var(--sl-color-hairline);
+		box-shadow: var(--sl-shadow-md);
+		z-index: var(--sl-z-index-navbar);
+	}
+
+	.portfolio-nav a {
+		padding: 0.5rem 0.25rem;
+		color: var(--sl-color-gray-2);
+		text-decoration: none;
+		font-size: var(--sl-text-sm);
+	}
+
+	.portfolio-nav a[aria-current='page'] {
+		color: var(--sl-color-white);
+		font-weight: 600;
+	}
+
+	.mobile-only-controls {
+		align-items: center;
+		gap: 1rem;
+		padding-top: 0.5rem;
+		margin-top: 0.25rem;
+		border-top: 1px solid var(--sl-color-hairline);
+	}
+
+	@media (min-width: 50rem) {
+		.nav-toggle-label {
+			display: none;
+		}
+
+		.portfolio-nav {
+			display: flex !important;
+			order: 2;
+			width: auto;
+			flex-direction: row;
+			align-items: center;
+			gap: 1.5rem;
+			padding-block: 0;
+			border-top: none;
+		}
+
+		.portfolio-nav a {
+			padding: 0;
+			white-space: nowrap;
+		}
+
+		.mobile-only-controls {
+			display: none !important;
+		}
+	}
+</style>

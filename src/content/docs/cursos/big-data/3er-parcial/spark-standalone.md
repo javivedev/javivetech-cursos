@@ -33,7 +33,7 @@ Antes de empezar a programar, es crucial entender cómo funciona Spark intername
 ### Componentes Principales
 
 
-![image](/javivetech-cursos/notion-images/big-data/41c96afa-d3f6-80b5-b768-ff3fc96f17ab.png)
+![image](/notion-images/big-data/41c96afa-d3f6-80b5-b768-ff3fc96f17ab.png)
 
 1. **Driver**: Tu programa Python/Scala que contiene la lógica de negocio
 2. **Cluster Manager**: Asigna recursos (CPU, RAM) a tu aplicación

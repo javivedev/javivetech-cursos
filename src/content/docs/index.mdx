@@ -1,15 +1,20 @@
 ---
-title: Cursos
-description: Cursos gratuitos de Javier Moya (Javi / Javive) — ingeniero de software, data engineer y profesor universitario.
+title: Software Engineer & Educator
+description: Sitio profesional de Javier. Proyectos de desarrollo de software, ingeniería de datos, inteligencia artificial y recursos educativos gratuitos.
 template: splash
+head:
+  - tag: title
+    content: "Javier | Software Engineer & Educator"
 hero:
-  tagline: Soy Javier Moya — en el mundo tech me dicen Javier, Javi o Javive. Ingeniero de software, data engineer y profesor universitario.
-  image:
-    file: ../../assets/houston.webp
+  title: Hola, soy Javier.
+  tagline: "Software Engineer · Data Engineer · Educator"
+  # TODO: agrega tu foto aquí, p. ej. image: { file: ../../assets/tu-foto.jpg }
   actions:
-    - text: Ver Big Data
-      link: big-data/
+    - text: Explorar proyectos
+      link: proyectos/
       icon: right-arrow
+    - text: Ver mis cursos
+      link: cursos/
     - text: GitHub
       link: https://github.com/javivedev
       icon: github
@@ -17,15 +22,50 @@ hero:
 ---
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import TechBadge from '../../components/TechBadge.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { PROFILE, TECH_STACK } from '../../../config/profile.mjs';
+import { projects } from '../../../config/projects.mjs';
 
-Estos son mis cursos, gratis para mis alumnos de la UPQ, de cualquier otra universidad, o para quien los haya encontrado por su cuenta.
+<p class="lead">{PROFILE.heroDescription}</p>
 
-## Materias
+## Sobre mí
+
+Ingeniero en Sistemas Computacionales, desarrollador de software y profesor universitario. Trabajo en desarrollo de software, ingeniería de datos y, en la academia, en investigación aplicada de inteligencia artificial. [Conoce más →](sobre-mi/)
+
+## Tecnologías
+
+{TECH_STACK.map((group) => (
+	<div class="tech-group">
+		<h3>{group.category}</h3>
+		<div class="badge-row">
+			{group.items.map((item) => (
+				<TechBadge name={item.name} icon={item.icon} />
+			))}
+		</div>
+	</div>
+))}
+
+## Proyectos destacados
+
+<CardGrid>
+	{projects.slice(0, 1).map((project) => (
+		<ProjectCard
+			name={project.name}
+			description={project.description}
+			tech={project.tech}
+			liveUrl={project.liveUrl}
+			repoUrl={project.repoUrl}
+		/>
+	))}
+</CardGrid>
+
+## Cursos
 
 <CardGrid>
 	<LinkCard
-		title="Manejo Masivo de Datos (Big Data)"
-		description="Ingeniería en Datos e Inteligencia Artificial — materia de 4.º cuatrimestre. Fundamentos de Big Data, Hadoop y Spark."
-		href="big-data/"
+		title="Cursos y recursos"
+		description="Apuntes, ejercicios y prácticas gratuitas de las materias que imparto en la universidad."
+		href="cursos/"
 	/>
 </CardGrid>

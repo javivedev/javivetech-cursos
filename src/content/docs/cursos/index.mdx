@@ -1,0 +1,25 @@
+---
+title: Cursos y recursos
+description: Apuntes, ejercicios, prácticas y proyectos gratuitos de las materias que imparto.
+template: splash
+hero:
+  title: Cursos y recursos
+  tagline: Comparto gratuitamente los materiales que preparo para mis clases universitarias—apuntes, ejercicios, prácticas y proyectos sobre programación, ingeniería de software, datos e inteligencia artificial.
+  image:
+    file: ../../../assets/houston.webp
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { subjects } from '../../../../config/subjects.mjs';
+
+Estos recursos están disponibles para mis estudiantes y cualquier persona interesada en aprender tecnología.
+
+<CardGrid>
+	{subjects.map((subject) => (
+		<LinkCard
+			title={subject.displayName ?? subject.slug}
+			description={subject.description}
+			href={`${subject.slug}/`}
+		/>
+	))}
+</CardGrid>

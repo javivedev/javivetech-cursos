@@ -3,12 +3,16 @@
 // 2. Corre `npm run sync`.
 // `astro.config.mjs` lee este mismo archivo para generar el sidebar, así que no hay que tocar nada más.
 
-// Dominio y ruta base del sitio. Por defecto apunta a GitHub Pages (sitio de
-// proyecto), pero se puede sobreescribir con variables de entorno al buildear
-// — así el mismo código sirve para GitHub Pages y para un deploy en VPS/Dokploy
-// con dominio propio (ahí usa SITE_URL=https://tu-dominio.com y BASE_PATH=/).
-export const SITE = process.env.SITE_URL ?? "https://javivedev.github.io";
-export const BASE_PATH = process.env.BASE_PATH ?? "/javivetech-cursos";
+// Dominio y ruta base del sitio. El default es "vivo en la raíz" (como en
+// local o en un VPS/Dokploy con dominio propio) — así `npm run dev`/`build`
+// funcionan tal cual, sin pasar nada. Solo el workflow de GitHub Pages
+// sobreescribe esto con SITE_URL/BASE_PATH (ver .github/workflows/deploy.yml),
+// porque ahí el sitio sí vive en una subcarpeta del dominio.
+export const SITE = process.env.SITE_URL ?? "http://localhost:4321";
+export const BASE_PATH = process.env.BASE_PATH ?? "/";
+
+// Carpeta/URL base donde viven los cursos dentro del sitio (p. ej. "/cursos").
+export const COURSES_BASE = "cursos";
 
 export const LESSONS_DATABASE_ID = "cf331a7da0eb499ba3126a6240c909ab";
 

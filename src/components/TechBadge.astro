@@ -1,0 +1,29 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+interface Props {
+	name: string;
+	icon?: string;
+}
+
+const { name, icon } = Astro.props as Props;
+---
+
+<span class="tech-badge">
+	{icon && <Icon name={icon as any} size="1rem" />}
+	{name}
+</span>
+
+<style>
+	.tech-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.3rem 0.7rem;
+		border-radius: 999px;
+		border: 1px solid var(--sl-color-gray-5);
+		background: var(--sl-color-black);
+		font-size: var(--sl-text-xs);
+		color: var(--sl-color-gray-2);
+	}
+</style>

@@ -1,0 +1,23 @@
+---
+title: Proyectos
+description: Proyectos profesionales de Javier Moya.
+template: splash
+---
+
+import { CardGrid } from '@astrojs/starlight/components';
+import ProjectCard from '../../../components/ProjectCard.astro';
+import { projects } from '../../../../config/projects.mjs';
+
+Proyectos en los que he trabajado, combinando desarrollo de software, datos e inteligencia artificial.
+
+<CardGrid>
+	{projects.map((project) => (
+		<ProjectCard
+			name={project.name}
+			description={project.description}
+			tech={project.tech}
+			liveUrl={project.liveUrl}
+			repoUrl={project.repoUrl}
+		/>
+	))}
+</CardGrid>

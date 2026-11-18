@@ -1,0 +1,24 @@
+---
+title: Sobre mí
+description: Formación, experiencia y áreas de interés de Javier Moya.
+template: splash
+---
+
+import TechBadge from '../../../components/TechBadge.astro';
+import { ABOUT } from '../../../../config/profile.mjs';
+
+Soy ingeniero en Sistemas Computacionales, desarrollador de software y profesor universitario. Me interesa construir soluciones tecnológicas, trabajar con datos y compartir conocimientos sobre ingeniería de software, inteligencia artificial y tecnologías modernas.
+
+## Formación académica
+
+{ABOUT.education.map((item) => <p>{item}</p>)}
+
+## Experiencia profesional
+
+{ABOUT.experience.map((item) => <p>{item}</p>)}
+
+## Áreas de interés
+
+<div class="badge-row">
+	{ABOUT.interests.map((item) => <TechBadge name={item} />)}
+</div>

@@ -38,9 +38,14 @@ jobs:
         run: npm run sync
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          SITE_URL: https://javivedev.github.io
+          BASE_PATH: /javivetech-cursos
 
       - name: Build del sitio
         run: npm run build
+        env:
+          SITE_URL: https://javivedev.github.io
+          BASE_PATH: /javivetech-cursos
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5

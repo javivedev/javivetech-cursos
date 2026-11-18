@@ -229,7 +229,7 @@ En mi caso: `/usr/lib/jvm/java-17-openjdk-arm64/bin/java`
 Tu path será diferente, mi procesador es arm64, por ejemplo: `/usr/lib/jvm/java-17-openjdk-amd64/bin/java`
 
 
-![image](/javivetech-cursos/notion-images/big-data/40796afa-d3f6-80b2-8596-d36ef697a324.png)
+![image](/notion-images/big-data/40796afa-d3f6-80b2-8596-d36ef697a324.png)
 
 
 ## Variable $PATH
@@ -272,7 +272,7 @@ wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
 Espera mientras se descarga se mirara algo asi:
 
 
-![image](/javivetech-cursos/notion-images/big-data/40796afa-d3f6-80ae-9dce-d84df4d20ac7.png)
+![image](/notion-images/big-data/40796afa-d3f6-80ae-9dce-d84df4d20ac7.png)
 
 
 :::note
@@ -296,7 +296,7 @@ tar -zxvf hadoop-3.3.6.tar.gz
 Se descomprime todo:
 
 
-![image](/javivetech-cursos/notion-images/big-data/40796afa-d3f6-8005-8e32-e20401b6907b.png)
+![image](/notion-images/big-data/40796afa-d3f6-8005-8e32-e20401b6907b.png)
 
 
 Creamos un enlace simbólico 
@@ -455,7 +455,7 @@ echo $HADOOP_HOME
 ```
 
 
-![image](/javivetech-cursos/notion-images/big-data/40796afa-d3f6-80c7-a198-fbfeeac1ac75.png)
+![image](/notion-images/big-data/40796afa-d3f6-80c7-a198-fbfeeac1ac75.png)
 
 
 En este momento ya podremos ejecutar hadoop desde cualquier directorio:
@@ -483,7 +483,7 @@ This command was run using /opt/hadoop-3.3.6/share/hadoop/common/hadoop-common-3
 ```
 
 
-![image](/javivetech-cursos/notion-images/big-data/40796afa-d3f6-80bb-bba9-f08ae7ab5ffb.png)
+![image](/notion-images/big-data/40796afa-d3f6-80bb-bba9-f08ae7ab5ffb.png)
 
 
 Muestra la ayuda con todos los subcomandos disponibles de Hadoop:

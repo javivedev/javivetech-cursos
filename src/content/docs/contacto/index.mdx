@@ -1,0 +1,16 @@
+---
+title: Contacto
+description: Cómo contactar a Javier Moya.
+template: splash
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { CONTACT } from '../../../../config/profile.mjs';
+
+¿Quieres platicar sobre un proyecto, una colaboración académica o tienes dudas sobre algún curso? Estos son mis canales:
+
+<CardGrid>
+	{CONTACT.github && <LinkCard title="GitHub" description="javivedev" href={CONTACT.github} />}
+	{CONTACT.linkedin && <LinkCard title="LinkedIn" description={CONTACT.linkedin} href={CONTACT.linkedin} />}
+	{CONTACT.email && <LinkCard title="Correo" description={CONTACT.email} href={`mailto:${CONTACT.email}`} />}
+</CardGrid>

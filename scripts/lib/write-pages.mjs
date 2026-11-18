@@ -17,9 +17,11 @@ function parcialFolder(parcial) {
 /**
  * Borra el contenido generado previamente de una materia, para que las
  * lecciones eliminadas en Notion desaparezcan del sitio en la próxima build.
+ * `docsSlug` es la ruta dentro de src/content/docs (ej. "cursos/big-data"),
+ * `subjectSlug` es el slug plano usado para las imágenes públicas.
  */
-export async function cleanSubjectContent({ docsDir, publicDir, subjectSlug }) {
-  await rm(path.join(docsDir, subjectSlug), { recursive: true, force: true });
+export async function cleanSubjectContent({ docsDir, publicDir, docsSlug, subjectSlug }) {
+  await rm(path.join(docsDir, docsSlug), { recursive: true, force: true });
   await rm(path.join(publicDir, "notion-images", subjectSlug), {
     recursive: true,
     force: true,
@@ -30,7 +32,7 @@ export async function cleanSubjectContent({ docsDir, publicDir, subjectSlug }) {
  * Escribe las páginas markdown de una materia, agrupadas por carpeta de Parcial.
  * @param {{
  *   docsDir: string,
- *   subjectSlug: string,
+ *   docsSlug: string,
  *   subjectTitle: string,
  *   subjectDescription?: string,
  *   lessons: Array<{id: string, title: string, parcial: string|null}>,
@@ -39,14 +41,14 @@ export async function cleanSubjectContent({ docsDir, publicDir, subjectSlug }) {
  */
 export async function writeSubjectPages({
   docsDir,
-  subjectSlug,
+  docsSlug,
   subjectTitle,
   subjectDescription,
   lessons,
   markdownByLessonId,
 }) {
   const orderByFolder = new Map();
-  const subjectDir = path.join(docsDir, subjectSlug);
+  const subjectDir = path.join(docsDir, docsSlug);
   await mkdir(subjectDir, { recursive: true });
 
   // Página de aterrizaje estable de la materia (ej. /big-data/), independiente

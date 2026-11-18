@@ -1,0 +1,100 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+interface Props {
+	name: string;
+	description: string;
+	tech: string[];
+	liveUrl?: string | null;
+	repoUrl?: string | null;
+}
+
+const { name, description, tech, liveUrl, repoUrl } = Astro.props as Props;
+---
+
+<article class="project-card">
+	<h3>{name}</h3>
+	<p>{description}</p>
+	<ul class="project-tech">
+		{tech.map((t) => (
+			<li>{t}</li>
+		))}
+	</ul>
+	{(liveUrl || repoUrl) && (
+		<div class="project-links">
+			{liveUrl && (
+				<a class="project-link" href={liveUrl} target="_blank" rel="noopener noreferrer">
+					Ver proyecto <Icon name="right-arrow" size="1em" />
+				</a>
+			)}
+			{repoUrl && (
+				<a class="project-link secondary" href={repoUrl} target="_blank" rel="noopener noreferrer">
+					<Icon name="github" size="1em" /> Repositorio
+				</a>
+			)}
+		</div>
+	)}
+</article>
+
+<style>
+	.project-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		padding: 1.5rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		background: var(--sl-color-black);
+	}
+
+	.project-card h3 {
+		margin: 0;
+		font-size: var(--sl-text-xl);
+		color: var(--sl-color-white);
+	}
+
+	.project-card p {
+		margin: 0;
+		color: var(--sl-color-gray-2);
+	}
+
+	.project-tech {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.project-tech li {
+		font-size: var(--sl-text-xs);
+		padding: 0.2rem 0.6rem;
+		border-radius: 999px;
+		background: var(--sl-color-gray-6);
+		color: var(--sl-color-gray-1);
+	}
+
+	.project-links {
+		display: flex;
+		gap: 1rem;
+		margin-top: 0.25rem;
+	}
+
+	.project-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-accent-high);
+		text-decoration: none;
+	}
+
+	.project-link.secondary {
+		color: var(--sl-color-gray-2);
+	}
+
+	.project-link:hover {
+		text-decoration: underline;
+	}
+</style>

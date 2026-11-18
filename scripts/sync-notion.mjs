@@ -2,7 +2,7 @@ import "dotenv/config";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { subjects } from "../config/subjects.mjs";
+import { subjects, COURSES_BASE } from "../config/subjects.mjs";
 import { createNotionClient } from "./lib/notion-client.mjs";
 import { queryLessonsForSubject } from "./lib/query-lessons.mjs";
 import { createConverter, convertLessonToMarkdown } from "./lib/markdown-transform.mjs";
@@ -14,12 +14,13 @@ const publicDir = path.join(rootDir, "public");
 
 async function syncSubject(notion, subject) {
   const label = subject.displayName ?? subject.slug;
+  const docsSlug = `${COURSES_BASE}/${subject.slug}`;
   console.log(`\nSincronizando "${label}"...`);
 
   const lessons = await queryLessonsForSubject(notion, subject.notionSubjectId);
   console.log(`  ${lessons.length} lección(es) encontrada(s).`);
 
-  await cleanSubjectContent({ docsDir, publicDir, subjectSlug: subject.slug });
+  await cleanSubjectContent({ docsDir, publicDir, docsSlug, subjectSlug: subject.slug });
 
   const converter = createConverter(notion, { subjectSlug: subject.slug, publicDir });
   const markdownByLessonId = new Map();
@@ -32,7 +33,7 @@ async function syncSubject(notion, subject) {
 
   await writeSubjectPages({
     docsDir,
-    subjectSlug: subject.slug,
+    docsSlug,
     subjectTitle: label,
     subjectDescription: subject.description,
     lessons,

@@ -224,7 +224,7 @@ gh auth login
 ```
 
 
-![image](/javivetech-cursos/notion-images/big-data/3d696afa-d3f6-802e-9fd9-f5e776304722.png)
+![image](/notion-images/big-data/3d696afa-d3f6-802e-9fd9-f5e776304722.png)
 
 
 ## **🖥️ Opción 2 — GitHub Desktop (Recomendada)**
