@@ -32,7 +32,9 @@ jobs:
           cache: npm
 
       - name: Instalar dependencias
-        run: npm ci
+        # npm ci no sirve: sharp tiene dependencias opcionales por plataforma
+        # y el lockfile (generado en macOS) no trae las variantes de Linux.
+        run: npm install
 
       - name: Sincronizar contenido desde Notion
         run: npm run sync

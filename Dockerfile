@@ -4,6 +4,8 @@ FROM node:22-alpine AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
+# npm ci no sirve aquí: sharp tiene dependencias opcionales distintas por
+# plataforma y el lockfile generado en macOS no trae las variantes de Linux.
 RUN npm install
 
 COPY . .
