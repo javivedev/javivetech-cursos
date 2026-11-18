@@ -1,0 +1,26 @@
+/* Columna de contenido más ancha en las páginas de lecciones (por defecto
+   Starlight la deja en 45rem): empuja el índice de la derecha más lejos y
+   hace que el curso se vea más grande en monitores anchos. */
+:root {
+	--sl-content-width: 60rem;
+}
+
+/* La home (hero + "Materias" debajo) usa el mismo ancho más generoso en
+   TODAS sus secciones, para que no queden desalineadas entre sí, con aire a
+   los costados en vez de pegarse al borde. */
+[data-has-hero] .sl-container {
+	max-width: 90rem;
+	padding-inline: clamp(1.5rem, 5vw, 4rem);
+}
+
+/* Menos relleno vertical en el hero: que no empuje tanto a "Materias" hacia abajo. */
+.hero {
+	padding-block: clamp(1rem, 4vw, 2.5rem) !important;
+}
+
+/* Con una sola materia, que la tarjeta ocupe todo el ancho en vez de quedar
+   a la mitad (CardGrid pasa a 2 columnas en pantallas anchas). Al agregar
+   una segunda materia vuelve solo a 2 columnas, sin tocar esto. */
+.card-grid:has(> :only-child) {
+	grid-template-columns: 1fr !important;
+}

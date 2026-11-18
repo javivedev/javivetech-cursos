@@ -27,6 +27,7 @@ export default defineConfig({
 			},
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/javivedev/javivetech-cursos' }],
 			sidebar: subjectSidebarGroups,
+			customCss: ['./src/styles/custom.css'],
 		}),
 	],
 });

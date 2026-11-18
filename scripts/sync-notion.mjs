@@ -34,6 +34,7 @@ async function syncSubject(notion, subject) {
     docsDir,
     subjectSlug: subject.slug,
     subjectTitle: label,
+    subjectDescription: subject.description,
     lessons,
     markdownByLessonId,
   });

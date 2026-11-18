@@ -1,13 +1,13 @@
 # Cursos — sitio sincronizado con Notion
 
-Sitio de documentación (Astro + [Starlight](https://starlight.astro.build)) cuyo contenido se escribe en Notion y se publica automáticamente en GitHub Pages.
+Sitio de documentación (Astro + [Starlight](https://starlight.astro.build)) cuyo contenido se escribe en Notion y se publica automáticamente, en GitHub Pages o en tu propio VPS con [Dokploy](#desplegar-en-tu-vps-con-dokploy).
 
 ## Cómo funciona
 
 1. Escribes tus lecciones en la base de datos **Lessons** de tu "Teacher Dashboard" en Notion.
 2. `npm run sync` descarga esas páginas, las convierte a Markdown y las guarda en `src/content/docs/<materia>/<parcial>/`.
 3. `npm run build` genera el sitio estático a partir de ese Markdown.
-4. GitHub Actions corre ambos pasos automáticamente (ver [Actualización automática](#actualización-automática)) y publica en GitHub Pages.
+4. Algo corre esos dos pasos por ti automáticamente cuando cambias algo en Notion: GitHub Actions si publicas en GitHub Pages (ver [Actualización automática](#actualización-automática)), o un rebuild de la imagen Docker si publicas con Dokploy (ver [Desplegar en tu VPS con Dokploy](#desplegar-en-tu-vps-con-dokploy)).
 
 ## 1. Crear la integración de Notion
 
@@ -84,6 +84,44 @@ El workflow se dispara por:
    ```
 
 Cada vez que se dispare esa automatización (p. ej. al editar una página de Lessons), GitHub arranca el workflow de inmediato.
+
+## Desplegar en tu VPS con Dokploy
+
+Como alternativa (o en vez) de GitHub Pages, el repo incluye un [`Dockerfile`](Dockerfile) listo para Dokploy: en cada build corre `npm run sync` y `npm run build` dentro de la imagen y sirve el resultado con nginx. Así, cada deploy trae el contenido más reciente de Notion sin pasos extra.
+
+### Crear la app en Dokploy
+
+1. **Crea una Application** en tu proyecto de Dokploy → **Source: tu repo de GitHub** (conecta tu cuenta de GitHub si no lo has hecho) → **Build type: Dockerfile** (ruta `Dockerfile`, ya está en la raíz del repo).
+2. **Environment / Build Args** — agrega estas variables (Dokploy las pasa como `ARG`/`ENV` al build):
+   - `NOTION_TOKEN` → tu token de Notion (márcalo como variable sensible si tu versión de Dokploy lo permite).
+   - `SITE_URL` → `https://tu-dominio.com` (el dominio que vas a apuntar a esta app).
+   - `BASE_PATH` → `/` (a diferencia de GitHub Pages, aquí el sitio vive en la raíz del dominio).
+3. **Domain** → agrega tu dominio/subdominio (p. ej. `cursos.tudominio.com`) apuntando al **puerto 80** (el que expone nginx en el `Dockerfile`). Dokploy se encarga del proxy y del certificado SSL.
+4. Dale **Deploy** la primera vez.
+
+### Que se actualice solo: Notion → sync → sitio
+
+- **Al hacer push a `main`**: activa **Auto Deploy** en la configuración de la app (Dokploy se conecta directo a GitHub, no necesitas nada más de tu lado).
+- **Al instante, cuando edites algo en Notion**: Dokploy expone una API para forzar un deploy.
+  1. Crea un **API token** en Dokploy: ícono de tu perfil → **Settings → API/Tokens**.
+  2. Copia el **Application ID** de esta app (en su página de **General**, o en la URL del panel).
+  3. En Notion, crea una automatización en la base Lessons con la acción **"Send webhook"**, método `POST`, hacia:
+     ```
+     https://TU-PANEL-DOKPLOY.com/api/application.deploy
+     ```
+     Headers:
+     ```
+     Content-Type: application/json
+     x-api-key: TU_TOKEN_DE_DOKPLOY
+     ```
+     Body:
+     ```json
+     { "applicationId": "TU_APPLICATION_ID" }
+     ```
+     > La ruta exacta y el header de autenticación (`x-api-key` vs `Authorization: Bearer`) pueden variar según tu versión de Dokploy — verifícalo en el **API Reference** que trae tu propio panel (normalmente en Settings) antes de confiar en esto a ciegas.
+- **Red de seguridad por si algo falla**: en la app, pestaña **Schedules**, crea un schedule con cron `0 * * * *` (cada hora) que corra un `curl` al mismo endpoint de arriba — así nunca pasa más de una hora sin que el sitio recoja cambios de Notion, igual que el cron del workflow de GitHub Pages.
+
+Con esto el flujo queda: **editas en Notion → la automatización dispara el deploy en Dokploy → la imagen corre `npm run sync` de nuevo → el sitio se actualiza solo**, sin que tengas que tocar nada.
 
 ## 5. Agregar otra materia
 

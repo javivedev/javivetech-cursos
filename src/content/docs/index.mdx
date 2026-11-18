@@ -1,23 +1,31 @@
 ---
 title: Cursos
-description: Material de clase sincronizado desde Notion.
+description: Cursos gratuitos de Javier Moya (Javi / Javive) — ingeniero de software, data engineer y profesor universitario.
 template: splash
 hero:
-  tagline: Lecciones, laboratorios y ejercicios de mis materias, siempre al día.
+  tagline: Soy Javier Moya — en el mundo tech me dicen Javier, Javi o Javive. Ingeniero de software, data engineer y profesor universitario.
   image:
     file: ../../assets/houston.webp
   actions:
     - text: Ver Big Data
       link: big-data/
       icon: right-arrow
+    - text: GitHub
+      link: https://github.com/javivedev
+      icon: github
+      variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+Estos son mis cursos, gratis para mis alumnos de la UPQ, de cualquier otra universidad, o para quien los haya encontrado por su cuenta.
 
 ## Materias
 
 <CardGrid>
-	<Card title="Big Data" icon="open-book">
-		Fundamentos de Big Data, Hadoop y Spark. [Empezar →](big-data/)
-	</Card>
+	<LinkCard
+		title="Manejo Masivo de Datos (Big Data)"
+		description="Ingeniería en Datos e Inteligencia Artificial — materia de 4.º cuatrimestre. Fundamentos de Big Data, Hadoop y Spark."
+		href="big-data/"
+	/>
 </CardGrid>

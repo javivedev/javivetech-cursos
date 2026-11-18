@@ -32,6 +32,7 @@ export async function cleanSubjectContent({ docsDir, publicDir, subjectSlug }) {
  *   docsDir: string,
  *   subjectSlug: string,
  *   subjectTitle: string,
+ *   subjectDescription?: string,
  *   lessons: Array<{id: string, title: string, parcial: string|null}>,
  *   markdownByLessonId: Map<string, string>,
  * }} args
@@ -40,6 +41,7 @@ export async function writeSubjectPages({
   docsDir,
   subjectSlug,
   subjectTitle,
+  subjectDescription,
   lessons,
   markdownByLessonId,
 }) {
@@ -49,12 +51,18 @@ export async function writeSubjectPages({
 
   // Página de aterrizaje estable de la materia (ej. /big-data/), independiente
   // de qué lecciones existan, para poder enlazarla desde otras páginas.
+  const overviewBody = [
+    subjectDescription,
+    "Elige un tema en la barra lateral para empezar.",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
   const overview = [
     "---",
     `title: ${JSON.stringify(subjectTitle)}`,
     "---",
     "",
-    "Elige un tema en la barra lateral para empezar.",
+    overviewBody,
   ].join("\n");
   await writeFile(path.join(subjectDir, "index.md"), `${overview}\n`);
 
